@@ -1,0 +1,30 @@
+---
+import AboutHeroImage from '../assets/blog-placeholder-about.jpg';
+import Layout from '../layouts/BlogPost.astro';
+---
+
+<Layout
+	title="Hi. I am Wahid"
+	description="Lorem ipsum dolor sit amet"
+	pubDate={new Date('August 08 2021')}
+	heroImage={AboutHeroImage}
+>
+	<div>
+        <p>Hi, I’m Wahiduz Zaman Alam, a software engineer with a strong focus on
+        frontend development and product experience. Over the years, I’ve worked
+        on building responsive, clean, and user-friendly web applications using
+        HTML, CSS, JavaScript, and modern frameworks like React.js, Next.js, and
+        Astro.<br></p>
+        <p>I’ve also taken on responsibilities beyond development
+        including product management, shaping feature workflows, and improving
+        user journeys. I enjoy transforming ideas into real, functional
+        experiences and making sure the product is both effective and easy to
+        use.<br></p>
+        <p> Along the way, I’ve created GIFs, explainer videos, and visual
+        content to demonstrate product workflows and simplify complex concepts
+        for users and teams.<br></p>
+        <p> I love building intuitive interfaces, optimizing
+        performance, and continuously learning new tools and techniques to
+        create better digital experiences.<br></p>
+      </div>
+</Layout>

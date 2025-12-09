@@ -1,0 +1,11 @@
+/* keeps every page consistent */
+.wrapper {
+  max-width: 800px;        /* 70 % of 1440 px desktops */
+  margin: 0 auto;
+  padding: 4rem 1.5rem 6rem; /* top / sides / bottom */
+}
+
+/* small screens – still centred, still 70 % effective width */
+@media (max-width: 600px) {
+  .wrapper { padding: 3rem 1rem 4rem; }
+}

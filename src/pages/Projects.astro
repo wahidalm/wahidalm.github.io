@@ -1,0 +1,128 @@
+---
+const projects = [
+//   {
+//     title: "GeoPhrase",
+//     desc: "Full-stack SaaS that turns shape-files into shareable maps. Astro.",
+//     img: "/images/geophrase-logo.png",
+//     tech: [""],
+//     live: "https://geophrase.com",
+//     code: "https://github.com/you/geophrase",
+//   },
+  {
+    title: "MUI Calculator",
+    desc: "A sleek calculator app built with React and Material-UI, featuring theme toggling and responsive design.",
+    img: "/images/muicalc.png",
+    tech: ["Material-UI", "JavaScript", "React"],
+    live: "https://wahidalm.github.io/muicalc/",
+    code: "https://github.com/wahidalm/muicalc",
+  },
+  {
+    title: "tic-tac-toe",
+    desc: "A classic Tic-Tac-Toe game built with vanilla JavaScript and CSS. Play against a friend.",
+    img: "/images/tictactoe.png",
+    tech: ["Next.js", "JavaScript", "CSS"],
+    live: "https://wahidalm.github.io/tic-tac-toe/",
+    code: "https://github.com/wahidalm/tic-tac-toe",
+  },
+];
+---
+
+<section id="projects" class="projects-wrap">
+  <h2>Projects</h2>
+
+  <div class="grid">
+    {projects.map((p) => (
+      <article class="card">
+        <a href={p.live} target="_blank" rel="noopener">
+          <img src={p.img} alt={p.title} />
+        </a>
+        <div class="content">
+          <h3>{p.title}</h3>
+          <p>{p.desc}</p>
+          <div class="tech">
+            {p.tech.map((t) => <span>{t}</span>)}
+          </div>
+          <div class="links">
+            <a href={p.live} target="_blank" rel="noopener">Live →</a>
+            <a href={p.code} target="_blank" rel="noopener">Code →</a>
+          </div>
+        </div>
+      </article>
+    ))}
+  </div>
+</section>
+
+<style>
+  .projects-wrap{
+    padding:4rem 1rem;
+    max-width:800px;
+    margin:0 auto 4rem;
+    scroll-margin-top:80px;
+  }
+  h2{text-align:center;margin-bottom:2.5rem;font-size:2rem}
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:2rem;
+  }
+
+  .card{
+    background:rgba(154, 142, 142, 0.352);
+    border:1px solid rgba(122, 93, 93, 0.4);
+    border-radius:16px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    transition:transform .2s;
+    transform:translateY(30px);
+    animation:fadeIn .6s ease forwards;
+  }
+  html.dark .card{background:rgba(0,0,0,0.25);border:1px solid rgba(255,255,255,0.15)}
+  .card:hover{transform:translateY(-4px)}
+
+  .card img{
+    width:100%;
+    height:160px;
+    object-fit:cover;
+  }
+
+  .content{padding:1.25rem 1.5rem 1.5rem;flex:1;display:flex;flex-direction:column}
+  h3{margin:0 0 .5rem;font-size:1.1rem}
+  p{margin:0 0 1rem;font-size:.85rem;flex:1}
+
+  .tech{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:1rem}
+  .tech span{
+    background:var(--accent,#6366f1);
+    color:#fff;
+    font-size:.7rem;
+    padding:.25rem .5rem;
+    border-radius:999px;
+  }
+
+  .links{display:flex;gap:1rem;margin-top:auto}
+  .links a{
+    text-decoration:none;
+    font-weight:500;
+    color:var(--text);
+    opacity:.8;
+  }
+  .links a:hover{opacity:1}
+</style>
+<script>
+  const obs = new IntersectionObserver(
+    (entries, observer) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.style.animationPlayState = "running";
+          observer.unobserve(e.target); // run once
+        }
+      });
+    },
+    { threshold: 0.25 }
+  );
+  document.querySelectorAll(".projects").forEach((c) => {
+    c.style.animationPlayState = "paused";
+    obs.observe(c);
+  });
+</script>

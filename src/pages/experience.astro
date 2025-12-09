@@ -1,0 +1,169 @@
+---
+const jobs = [
+  {
+    company: "Geophrase",
+    role: "Product Manager",
+    team: "Development Team",
+    start: "Jan 2025",
+    end: "Present",
+    desc: "Leading product development, coordinating cross-functional teams, and driving product strategy to enhance user experience and achieve business goals.",
+    logo: "/images/geophrase-logo.png",
+  },
+  {
+    company: "Amazon",
+    role: "Customer Support Associate",
+    team: "Customer Support",
+    start: "Aug 2023",
+    end: "Jan 2024",
+    desc: "Resolved high-volume customer inquiries, maintained SLA compliance and contributed to process-improvement SOPs.",
+    logo: "/images/amazon.svg",
+  },
+  {
+    company: "Hero Fincorp",
+    role: "Sales Team Member",
+    team: "Sales",
+    start: "Jan 2023",
+    end: "Jun 2023",
+    desc: "Collaborated with the sales team to achieve monthly targets, managed lead pipelines and improved conversion rates.",
+    logo: "/images/herofin.png",
+  },
+  {
+    company: "Winline India",
+    role: "Software Engineer",
+    team: "Engineering",
+    start: "Jan 2019",
+    end: "Jun 2020",
+    desc: "Developed and maintained internal ERP modules, wrote test suites and reduced deployment time by 30%.",
+    logo: "/images/winlineindia.png",
+  },
+];
+---
+
+<main id="exp" class="wrap">
+  <h1>Experience</h1>
+
+  <div class="timeline">
+    {
+      jobs.map((j, i) => (
+        <article class="card" data-delay={i}>
+          <div class="dot" />
+          <img src={j.logo} alt={j.company} class="logo" />
+          <div class="content">
+            <h2>{j.role}</h2>
+            <p class="company">
+              {j.company} · {j.team}
+            </p>
+            <p class="date">
+              {j.start} – {j.end}
+            </p>
+            <p class="desc">{j.desc}</p>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</main>
+
+<style>
+  :root{
+  --card-bg: rgba(255,255,255,0.6);
+  --card-border: rgba(255,255,255,0.4);
+  --text: #111;
+  --border: #ddd;
+  --accent: #6366f1;
+}
+html.dark{
+  --card-bg: rgba(0,0,0,0.25);
+  --card-border: rgba(255,255,255,0.15);
+  --text: #fff;
+  --border: #444;
+}
+
+  /* 1) bring back a safe wrapper – same as your other pages */
+.wrap{
+  scroll-margin-top:75px;
+}
+
+h1{font-size:2rem;margin-bottom:2rem;text-align:center}
+
+/* ---------- timeline ---------- */
+.timeline{position:relative;padding:1rem 0}
+.timeline::before{        /* vertical line */
+  content:"";
+  position:absolute;
+  left:20px;               /* pull left on tiny screens */
+  top:0;bottom:0;
+  width:2px;
+  background:var(--border);
+}
+
+/* ---------- card – fully responsive ---------- */
+.card{
+  display:flex;
+  align-items:flex-start;
+  gap:0.75rem;
+  margin:0 0 2rem 0;
+  opacity:0;
+  transform:translateY(30px);
+  animation:fadeIn .6s ease forwards;
+}
+@keyframes fadeIn{to{opacity:1;transform:translateY(0)}}
+
+.dot{
+  width:14px;height:14px;
+  background:var(--accent,#6366f1);
+  border-radius:50%;
+  flex-shrink:0;
+  margin-top:6px;
+  box-shadow:0 0 0 3px var(--bg);
+}
+
+.logo{
+  width:32px;
+  height:32px;
+  object-fit:contain;
+  background:#beb4b4;
+  border-radius:6px;
+  padding:3px;
+  flex-shrink:0;
+}
+@media (max-width: 400px) {
+  .timeline::before { display: none; }
+  .dot { display: none; }
+  .card { margin-left: 0; }
+  h2{ font-size:2rem; }
+}
+html.dark .logo{background:#222}
+
+.content{
+  flex:1 1 0;
+  min-width:0;                 /* critical – lets text wrap */
+  background:rgba(127,127,127,.05);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:0.75rem 1rem;
+}
+html.dark .content{background:rgba(255,255,255,.05)}
+
+.company{font-weight:600;margin:.25rem 0;overflow-wrap:break-word;}
+.date{opacity:.75;font-size:.85rem;overflow-wrap:break-word;}
+.desc{margin:.5rem 0 0;overflow-wrap:break-word;} /* break long words */
+</style>
+
+<script>
+  const obs = new IntersectionObserver(
+    (entries, observer) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.style.animationPlayState = "running";
+          observer.unobserve(e.target); // run once
+        }
+      });
+    },
+    { threshold: 0.25 }
+  );
+  document.querySelectorAll(".card").forEach((c) => {
+    c.style.animationPlayState = "paused";
+    obs.observe(c);
+  });
+</script>
