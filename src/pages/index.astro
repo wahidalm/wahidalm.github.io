@@ -8,6 +8,8 @@ import Experience from "./experience.astro";
 import Projects from "./Projects.astro";
 import Contact from "./contact.astro";
 import '../styles/global.css';
+import ScrollDown from "../components/ScrollDown.astro";
+import Logger from "../components/Logger.astro";
 ---
 
 <!doctype html>
@@ -16,8 +18,8 @@ import '../styles/global.css';
     <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
   </head>
   <body>
+    <Logger />
     <Header />
-
     <Hero
       name="Wahiduz Zaman Alam"
       title="Software Engineer"
@@ -75,6 +77,7 @@ import '../styles/global.css';
           </div>
         </section>
       </div>
+      <ScrollDown/>
       <div>
       <Footer />
       </div>

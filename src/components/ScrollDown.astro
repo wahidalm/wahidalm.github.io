@@ -1,0 +1,85 @@
+---
+
+---
+
+<!-- Down arrow (always visible) -->
+<a href="#main-content" class="scroll-glass down" aria-label="Scroll down">
+  <span class="arrow">↓</span>
+</a>
+
+<!-- Up arrow (appears after scroll) -->
+<button class="scroll-glass up" aria-label="Scroll to top" hidden>
+  <span class="arrow">↑</span>
+</button>
+
+<style>
+  .scroll-glass{
+    position: fixed;
+    right: 2rem;
+    width: 48px;
+    height: 48px;
+    border-radius: 40%;
+    background: rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    z-index: 100;
+  }
+  html.dark .scroll-glass{
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  .scroll-glass:hover{transform: translateY(-4px) scale(1.05);}
+  .arrow{font-size: 1.6rem; color: var(--text);}
+
+  /* positions */
+  .down{bottom: 0.5rem;}
+  .up{bottom: 4rem; opacity: 0; pointer-events: none;}
+  .up.show{opacity: 1; pointer-events: auto;}
+
+  @media (max-width: 600px) {
+    .scroll-glass{right: 1rem;
+    width: 40px;
+    height: 40px;}
+    .up{bottom: 3.5rem;}
+  }
+</style>
+
+<script>
+  // scroll down
+  function scrollDown() {
+  const sections = document.querySelectorAll('section, #about, #exp, #projects, #contact');
+  let next = null;
+  for (const s of sections) {
+    if (s.getBoundingClientRect().top > window.innerHeight * 0.5) {
+      next = s;
+      break;
+    }
+  }
+  (next || document.body).scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+document.querySelector('.scroll-glass.down')?.addEventListener('click', e => {
+  e.preventDefault();
+  scrollDown();
+});
+
+  // scroll up + show/hide
+  const upBtn = document.querySelector('.scroll-glass.up');
+  const showAt = 300; // px
+
+  const toggle = () => {
+    if (window.scrollY > showAt) upBtn.classList.add('show');
+    else upBtn.classList.remove('show');
+  };
+  window.addEventListener('scroll', toggle, { passive: true });
+  toggle(); // initial check
+
+  upBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
