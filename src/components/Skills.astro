@@ -1,0 +1,169 @@
+---
+const skills = [
+  {
+    category: "Languages",
+    items: [
+      { name: "JavaScript", icon: "JS" },
+      { name: "Python", icon: "PY" },
+      { name: "Dart", icon: "DT" },
+      { name: "HTML/CSS", icon: "HC" },
+    ],
+  },
+  {
+    category: "Frontend",
+    items: [
+      { name: "React", icon: "RE" },
+      { name: "Next.js", icon: "NX" },
+      { name: "Astro", icon: "AS" },
+      { name: "Flutter", icon: "FL" },
+    ],
+  },
+  {
+    category: "Backend",
+    items: [
+      { name: "Django", icon: "DJ" },
+      { name: "Django REST framework", icon: "DR" },
+      { name: "Supabase", icon: "SB" },
+      { name: "Firebase", icon: "FB" },
+    ],
+  },
+  {
+    category: "Tools & Others",
+    items: [
+      { name: "Docker", icon: "DO" },
+      { name: "Git", icon: "GT" },
+      { name: "Linux", icon: "LX" },
+      { name: "REST APIs", icon: "API" },
+    ],
+  },
+];
+---
+
+<section id="skills" class="skills-wrap">
+  <h2>Skills & Technologies</h2>
+  <div class="skills-grid">
+    {skills.map((group) => (
+      <div class="skill-group">
+        <h3>{group.category}</h3>
+        <div class="skill-items">
+          {group.items.map((skill) => (
+            <div class="skill-badge">
+              <span class="skill-icon">{skill.icon}</span>
+              <span class="skill-name">{skill.name}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .skills-wrap {
+    padding: 4rem 1rem;
+    max-width: 900px;
+    margin: 0 auto 4rem;
+    scroll-margin-top: 80px;
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    font-size: 2rem;
+    color: var(--text);
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+  }
+
+  .skill-group {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .skill-group:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  }
+
+  html.dark .skill-group:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  }
+
+  .skill-group h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1rem;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+
+  .skill-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .skill-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.75rem;
+    background: rgba(var(--gray-light), 0.5);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 0.85rem;
+    color: var(--text);
+    transition: all 0.2s;
+  }
+
+  .skill-badge:hover {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+    transform: scale(1.05);
+  }
+
+  html.dark .skill-badge {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  html.dark .skill-badge:hover {
+    background: var(--accent);
+  }
+
+  .skill-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 4px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .skill-badge:hover .skill-icon {
+    background: #fff;
+    color: var(--accent);
+  }
+
+  @media (max-width: 480px) {
+    .skills-grid {
+      grid-template-columns: 1fr;
+    }
+    .skills-wrap {
+      padding: 2rem 1rem;
+    }
+  }
+</style>

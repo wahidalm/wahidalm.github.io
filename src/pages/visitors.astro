@@ -1,54 +1,81 @@
 ---
-const SUPA_URL = 'https://tllrpbryxtrnpgruzgum.supabase.co';   
-const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRsbHJwYnJ5eHRybnBncnV6Z3VtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUzNzMyNDYsImV4cCI6MjA4MDk0OTI0Nn0._02eH5VMlH9rRUTn_bJoC-aNg-TU10XreK377ofmFag';
-                           
+import Logger from '../components/Logger.astro';
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 
-const res = await fetch(
-  `${SUPA_URL}/rest/v1/visitors?select=*&order=visited_at.desc`,
-  { headers: { apikey: SUPA_KEY } }
-);
-
-if (!res.ok) {
-  throw new Error(`Supabase error ${res.status}: ${await res.text()}`);
+interface Visitor {
+  ip: string;
+  country: string;
+  city: string;
+  visited_at: string;
 }
 
-const body = await res.json();
-if (!Array.isArray(body)) {
-  throw new Error(`Unexpected response: ${JSON.stringify(body)}`);
+// Fetch visitor data at build time with fallback
+let data: Visitor[] = [];
+try {
+  const res = await fetch('https://tllrpbryxtrnpgruzgum.supabase.co/rest/v1/visitors?select=*&order=visited_at.desc&limit=50', {
+    headers: {
+      'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRsbHJwYnJ5eHRybnBncnV6Z3VtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUzNzMyNDYsImV4cCI6MjA4MDk0OTI0Nn0._02eH5VMlH9rRUTn_bJoC-aNg-TU10XreK377ofmFag',
+      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRsbHJwYnJ5eHRybnBncnV6Z3VtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUzNzMyNDYsImV4cCI6MjA4MDk0OTI0Nn0._02eH5VMlH9rRUTn_bJoC-aNg-TU10XreK377ofmFag'
+    }
+  });
+  if (res.ok) {
+    data = await res.json() as Visitor[];
+  }
+} catch (e) {
+  console.warn('Could not fetch visitor data:', e);
 }
-
-const data = body;
 ---
+
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <title>Visitor Log</title>
+    <BaseHead title={`Visitor Log | ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
     <style>
-      body{font-family:system-ui;background:#111;color:#eee;padding:2rem}
-      table{width:100%;border-collapse:collapse;margin-top:1rem}
-      th,td{padding:.5rem 1rem;border:1px solid #333;text-align:left}
-      th{background:#222}
-      .center{display:grid;place-items:center;min-height:100vh}
+      main { padding: 2rem 1rem; max-width: 900px; margin: 0 auto; }
+      h1 { font-size: 2rem; margin-bottom: 1.5rem; }
+      table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+      th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+      th { font-weight: 600; color: var(--accent); background: var(--card); }
+      tr:hover { background: var(--card); }
+      .empty { text-align: center; padding: 3rem; color: rgb(var(--gray)); font-style: italic; }
+      .count { margin-bottom: 1rem; color: rgb(var(--gray)); font-size: 0.9rem; }
     </style>
   </head>
   <body>
-    <div class="center">
-      <h1>Visitor Log ({data.length})</h1>
-      <table>
-        <thead>
-          <tr><th>IP</th><th>Country</th><th>City</th><th>Time (UTC)</th></tr>
-        </thead>
-        <tbody>
-          {data.map((v) => (
+    <Header />
+    <main>
+      <h1>Visitor Log</h1>
+      <p class="count">{data.length} visitors recorded</p>
+
+      {data.length > 0 ? (
+        <table>
+          <thead>
             <tr>
-              <td>{v.ip}</td>
-              <td>{v.country}</td>
-              <td>{v.city}</td>
-              <td>{new Date(v.visited_at).toLocaleString()}</td>
+              <th>IP</th>
+              <th>Country</th>
+              <th>City</th>
+              <th>Time (UTC)</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody>
+            {data.map((v: Visitor) => (
+              <tr>
+                <td>{v.ip}</td>
+                <td>{v.country}</td>
+                <td>{v.city}</td>
+                <td>{new Date(v.visited_at).toLocaleString()}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <p class="empty">No visitor data available. The Supabase connection may be unavailable.</p>
+      )}
+    </main>
+    <Footer />
+    <Logger />
   </body>
 </html>
