@@ -1,62 +1,23 @@
-# Astro Starter Kit: Blog
+# Wahiduz Zaman Alam
 
-```sh
-npm create astro@latest -- --template blog
-```
+Software Engineer & Product Manager focused on architecting scalable web platforms and cross-platform mobile ecosystems. Experienced in bridging product vision with robust technical execution across the full stack.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+### Technical Stack
 
-Features:
+**Languages:** JavaScript, Python, Dart, HTML/CSS  
+**Backend & BaaS:** Django, Django REST Framework, Supabase, Firebase  
+**Frontend/Mobile:** Next.js, Flutter, Astro  
+**Infrastructure & Data:** Docker, Hive, RESTful APIs, Linux (Fedora)
 
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and OpenGraph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
+### Current Focus
 
-## 🚀 Project Structure
+**Resumer:** Architecting a mobile-first resume generation platform (Flutter, Django REST Framework) utilizing Hive for high-performance local caching and Supabase/Firebase for seamless cloud synchronization.  
+**Geophrase:** Managed product lifecycles and spearheaded frontend UI/UX engineering for a collaborative application ecosystem.  
+**Creative Talent Marketplace:** Developing a scalable, SEO-optimized web application to connect freelance creative professionals with clients, leveraging Next.js, Astro, and Dockerized environments.  
 
-Inside of your Astro project, you'll see the following folders and files:
+### Interests
 
-```text
-├── public/
-├── src/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
-```
+Driven by Long-Distance Running, Vocal Music, and Android System Customization.
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
-
-## Credit
-
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+[Portfolio](https://wahidalm.github.io/) • [LinkedIn](https://www.linkedin.com/in/wahiduz-alam-519995313)
+ 
