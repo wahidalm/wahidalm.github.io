@@ -7,5 +7,12 @@ import { defineConfig } from 'astro/config';
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://wahidalm.github.io',
-	integrations: [mdx(), sitemap()],
+	integrations: [
+		mdx(),
+		sitemap({
+			filter: (page) => true,
+			customPages: ['https://wahidalm.github.io/'],
+		}),
+	],
+	trailingSlash: 'never',
 });
