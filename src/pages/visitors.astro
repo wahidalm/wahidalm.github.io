@@ -12,17 +12,22 @@ interface Visitor {
   visited_at: string;
 }
 
-// Fetch visitor data at build time with fallback
+const EDGE_URL = 'https://bolwzblnkatfdobjeqey.supabase.co/functions/v1/log-visitor';
+const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJvbHd6Ymxua2F0ZmRvYmplcWV5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2NzEyOTcsImV4cCI6MjA5OTI0NzI5N30.xaZJR3A6QIncDSC2IwRMCLaRvUMcgo12R5QX_LPTu0U';
+
+// Fetch visitor data at build time via Edge Function
 let data: Visitor[] = [];
 try {
-  const res = await fetch('https://tllrpbryxtrnpgruzgum.supabase.co/rest/v1/visitors?select=*&order=visited_at.desc&limit=50', {
+  const res = await fetch(EDGE_URL, { 
+    method: 'GET',
     headers: {
-      'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRsbHJwYnJ5eHRybnBncnV6Z3VtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUzNzMyNDYsImV4cCI6MjA4MDk0OTI0Nn0._02eH5VMlH9rRUTn_bJoC-aNg-TU10XreK377ofmFag',
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRsbHJwYnJ5eHRybnBncnV6Z3VtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUzNzMyNDYsImV4cCI6MjA4MDk0OTI0Nn0._02eH5VMlH9rRUTn_bJoC-aNg-TU10XreK377ofmFag'
+      'Authorization': `Bearer ${ANON_KEY}`
     }
   });
   if (res.ok) {
     data = await res.json() as Visitor[];
+  } else {
+    console.warn('Edge Function returned:', res.status, await res.text());
   }
 } catch (e) {
   console.warn('Could not fetch visitor data:', e);
@@ -72,7 +77,7 @@ try {
           </tbody>
         </table>
       ) : (
-        <p class="empty">No visitor data available. The Supabase connection may be unavailable.</p>
+        <p class="empty">No visitor data available yet. New visitors will appear here once logged.</p>
       )}
     </main>
     <Footer />

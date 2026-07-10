@@ -105,9 +105,12 @@ h1{font-size:2rem;margin-bottom:2rem;text-align:center}
   margin:0 0 2rem 0;
   opacity:0;
   transform:translateY(30px);
-  animation:fadeIn .6s ease forwards;
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
-@keyframes fadeIn{to{opacity:1;transform:translateY(0)}}
+.card.visible {
+  opacity:1;
+  transform:translateY(0);
+}
 
 .dot{
   width:14px;height:14px;
@@ -155,15 +158,15 @@ html.dark .content{background:rgba(255,255,255,.05)}
     (entries, observer) => {
       entries.forEach((e) => {
         if (e.isIntersecting) {
-          e.target.style.animationPlayState = "running";
-          observer.unobserve(e.target); // run once
+          const el = e.target;
+          el.classList.add("visible");
+          observer.unobserve(el); // run once
         }
       });
     },
     { threshold: 0.25 }
   );
   document.querySelectorAll(".card").forEach((c) => {
-    c.style.animationPlayState = "paused";
     obs.observe(c);
   });
 </script>

@@ -1,10 +1,17 @@
-<script type="module">
-  // Only run in browser, never during SSR/build
-  if (typeof window === 'undefined') return;
+---
+// Logger.astro - Secure client-side visitor tracking
+---
 
-  const SUPA_URL = 'https://tllrpbryxtrnpgruzgum.supabase.co';
-  const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRsbHJwYnJ5eHRybnBncnV6Z3VtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUzNzMyNDYsImV4cCI6MjA4MDk0OTI0Nn0._02eH5VMlH9rRUTn_bJoC-aNg-TU10XreK377ofmFag';
+<script type="module">
+  if (typeof window === 'undefined') return;
+  
+  const EDGE_URL = 'https://bolwzblnkatfdobjeqey.supabase.co/functions/v1/log-visitor';
+  const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJvbHd6Ymxua2F0ZmRvYmplcWV5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2NzEyOTcsImV4cCI6MjA5OTI0NzI5N30.xaZJR3A6QIncDSC2IwRMCLaRvUMcgo12R5QX_LPTu0U';
   const IP_KEY = 'e50c6fe7f2c760aa7666bf69bfd97a21';
+  const SESSION_KEY = 'visitor_logged';
+
+  // Prevent duplicate logging during the same browser session
+  if (sessionStorage.getItem(SESSION_KEY)) return;
 
   (async () => {
     try {
@@ -14,22 +21,21 @@
       const geoRes = await fetch(`https://api.ipapi.com/api/${ip}?access_key=${IP_KEY}&fields=country_name,city`);
       const geo = await geoRes.json();
 
-      await fetch(`${SUPA_URL}/rest/v1/visitors`, {
+      await fetch(EDGE_URL, {
         method: 'POST',
-        headers: {
+        headers: { 
           'Content-Type': 'application/json',
-          'apikey': SUPA_KEY,
-          'Authorization': `Bearer ${SUPA_KEY}`
+          'Authorization': `Bearer ${ANON_KEY}`
         },
         body: JSON.stringify({
-          ip: ip,
+          ip,
           country: geo.country_name || 'Unknown',
-          city: geo.city || 'Unknown',
-          visited_at: new Date().toISOString()
+          city: geo.city || 'Unknown'
         })
       });
+
+      sessionStorage.setItem(SESSION_KEY, 'true');
     } catch (e) {
-      // Silently fail - don't break the site if logging fails
       console.warn('Visitor logging failed:', e);
     }
   })();
