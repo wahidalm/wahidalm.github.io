@@ -20,6 +20,25 @@ const posts = (await getCollection('blog')).sort(
 			main {
 				width: 960px;
 			}
+			.blog-notice {
+				background: linear-gradient(135deg, var(--accent) 0%, #8b5cf6 100%);
+				color: white;
+				padding: 1.5rem 2rem;
+				border-radius: 12px;
+				margin-bottom: 2rem;
+				text-align: center;
+				box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+			}
+			.blog-notice h3 {
+				margin: 0 0 0.5rem 0;
+				font-size: 1.5rem;
+				color: white;
+			}
+			.blog-notice p {
+				margin: 0;
+				opacity: 0.9;
+				font-size: 1rem;
+			}
 			ul {
 				display: flex;
 				flex-wrap: wrap;
@@ -89,6 +108,10 @@ const posts = (await getCollection('blog')).sort(
 	<body>
 		<Header />
 		<main>
+			<div class="blog-notice">
+				<h3>📝 Blog Coming Soon</h3>
+				<p>I'm currently working on creating valuable content about web development, Flutter, and software engineering. Check back soon for updates!</p>
+			</div>
 			<section>
 				<ul>
 					{

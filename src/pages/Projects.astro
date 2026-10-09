@@ -1,30 +1,5 @@
 ---
-const projects = [
-  {
-    title: "MUI Calculator",
-    desc: "A sleek calculator app built with React and Material-UI, featuring theme toggling and responsive design.",
-    img: "/images/muicalc.png",
-    tech: ["Material-UI", "JavaScript", "React"],
-    live: "https://wahidalm.github.io/muicalc/",
-    code: "https://github.com/wahidalm/muicalc",
-  },
-  {
-    title: "Tic-Tac-Toe",
-    desc: "A classic Tic-Tac-Toe game built with vanilla JavaScript and CSS. Play against a friend.",
-    img: "/images/tictactoe.png",
-    tech: ["Next.js", "JavaScript", "CSS"],
-    live: "https://wahidalm.github.io/tic-tac-toe/",
-    code: "https://github.com/wahidalm/tic-tac-toe",
-  },
-  {
-    title: "Resumer",
-    desc: "A mobile-first resume builder built with Flutter and Django. Create, preview, and download professional resumes.",
-    img: "",
-    tech: ["Flutter", "Django", "Dart", "Python"],
-    live: "",
-    code: "https://github.com/wahidalm/resumer",
-  },
-];
+import { projects } from '../data/projects';
 ---
 
 <section id="projects" class="projects-wrap">
@@ -34,7 +9,7 @@ const projects = [
       <article class="card">
         {p.img ? (
           <a href={p.live || p.code} target="_blank" rel="noopener noreferrer" class="img-link">
-            <img src={p.img} alt={p.title} loading="lazy" />
+            <img src={p.img} alt={p.alt} loading="lazy" />
           </a>
         ) : (
           <div class="img-placeholder">

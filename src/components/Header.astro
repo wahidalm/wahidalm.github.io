@@ -92,10 +92,18 @@ import ThemeToggle from './ThemeToggle.astro';
     border-radius: 0.5rem;
     transition: all 0.2s;
     font-size: 0.95rem;
+    position: relative;
   }
   .internal-links a:hover {
     background: var(--card);
     color: var(--accent);
+  }
+  .internal-links a.active {
+    background: var(--accent);
+    color: #fff;
+  }
+  .internal-links a.active:hover {
+    background: var(--accent-dark);
   }
 
   /* ---------- actions ---------- */
@@ -201,4 +209,37 @@ import ThemeToggle from './ThemeToggle.astro';
       }
     });
   }
+
+  // Active navigation based on scroll position
+  const sections = document.querySelectorAll('section[id], main[id], div[id]');
+  const navLinks = document.querySelectorAll('.internal-links a');
+
+  function setActiveLink() {
+    let current = '';
+
+    sections.forEach((section) => {
+      const sectionTop = (section as HTMLElement).offsetTop;
+      const sectionHeight = (section as HTMLElement).clientHeight;
+      if (window.scrollY >= (sectionTop - 100)) {
+        current = section.getAttribute('id') || '';
+      }
+    });
+
+    navLinks.forEach((link) => {
+      link.classList.remove('active');
+      const href = link.getAttribute('href') || '';
+
+      // Handle both full paths and hash-only links
+      if (href === `/#${current}` || href === `#${current}` ||
+          (href === '/' && window.scrollY < 300)) {
+        link.classList.add('active');
+      }
+    });
+  }
+
+  // Set active link on scroll
+  window.addEventListener('scroll', setActiveLink);
+
+  // Set active link on load
+  setActiveLink();
 </script>
