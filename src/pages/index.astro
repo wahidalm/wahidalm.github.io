@@ -29,65 +29,96 @@ import Logger from "../components/Logger.astro";
       img="../wahid-alam.webp"
     />
 
-    <main>
+    <main id="main-content">
       <div class="section-end"></div>
-      <div id="about" class="about-context">
-        <div>
-          Hello, I'm <span class="highlight">Wahid</span>.
-        </div>
-        <div>
-          <p>
-            I am a software engineer with a strong focus on frontend development
-            and product experience. Over the years, I've worked on building
-            responsive, clean, and user-friendly web applications using HTML,
-            CSS, JavaScript, and modern frameworks like React.js, Next.js, and
-            Astro.<br />
-          </p>
-          <p>
-            I've also taken on responsibilities beyond development including
-            product management, shaping feature workflows, and improving user
-            journeys. I enjoy transforming ideas into real, functional
-            experiences and making sure the product is both effective and easy
-            to use.<br />
-          </p>
-          <p>
-            Along the way, I've created GIFs, explainer videos, and visual
-            content to demonstrate product workflows and simplify complex
-            concepts for users and teams.<br />
-          </p>
-          <p>
-            I love building intuitive interfaces, optimizing performance, and
-            continuously learning new tools and techniques to create better
-            digital experiences.<br />
-          </p>
-        </div>
-        <div class="section-end"></div>
-        <div>
-          <Experience />
-        </div>
-        <div class="section-end"></div>
-        <section>
-          <div>
-            <Skills />
+
+      <!-- About Section -->
+      <section id="about" class="page-section">
+        <div class="about-context">
+          <div class="about-greeting">
+            Hello, I'm <span class="highlight">Wahiduz Zaman Alam</span>.
           </div>
-        </section>
-        <div class="section-end"></div>
-        <section>
           <div>
-            <Projects />
+            <p>
+              I am a Senior Full-Stack Software Engineer &amp; Product Manager focused on architecting scalable web platforms and AI-powered mobile ecosystems. I specialize in bridging product vision with robust, end-to-end technical execution to create delightful digital experiences.
+            </p>
+            <p>
+              Over the years, I’ve built responsive, high-performance web applications using React, Next.js, and Astro, alongside native cross-platform mobile apps with Flutter and Dart. On the backend, I design heavy, scalable infrastructure using Python, Django, PostgreSQL, and Redis, deployed via containerized Docker environments.
+            </p>
+            <p>
+              Beyond code, I step into product management—shaping feature workflows, orchestrating cross-functional teams, and integrating modern AI capabilities to solve complex problems (most recently in the industrial quick-commerce space). I also enjoy creating architecture walkthroughs and visual guides to simplify complex workflows for both users and engineering teams.
+            </p>
+            <p>
+              I love building intuitive interfaces, optimizing system performance, and continuously leveraging new technologies to build platforms that make a real-world impact.
+            </p>
           </div>
-        </section>
-        <div class="section-end"></div>
-        <section>
-          <div>
-            <Contact />
-          </div>
-        </section>
-      </div>
-      <ScrollDown/>
-      <div>
-      <Footer />
-      </div>
+        </div>
+      </section>
+
+      <div class="section-end"></div>
+
+      <!-- Experience Section -->
+      <section id="exp" class="page-section">
+        <Experience isSection={true} />
+      </section>
+
+      <div class="section-end"></div>
+
+      <!-- Skills Section -->
+      <section id="skills" class="page-section">
+        <Skills isSection={true} />
+      </section>
+
+      <div class="section-end"></div>
+
+      <!-- Projects Section -->
+      <section id="projects" class="page-section">
+        <Projects isSection={true} />
+      </section>
+
+      <div class="section-end"></div>
+
+      <!-- Contact Section -->
+      <section id="contact" class="page-section">
+        <Contact />
+      </section>
     </main>
+
+    <ScrollDown />
+    <Footer />
   </body>
 </html>
+
+<style>
+  .page-section {
+    padding: 2.5rem 0;
+    scroll-margin-top: 80px;
+  }
+
+  .section-end {
+    margin: 0 auto;
+    width: 100%;
+    height: 2px;
+    background: var(--section);
+    border-radius: 2px;
+  }
+
+  .about-context {
+    max-width: 680px;
+    margin: 0 auto;
+    scroll-margin-top: 80px;
+  }
+
+  .about-greeting {
+    font-size: 1.35rem;
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+    color: var(--text);
+  }
+
+  @media (max-width: 600px) {
+    .page-section {
+      padding: 2rem 0;
+    }
+  }
+</style>

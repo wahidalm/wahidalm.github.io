@@ -5,6 +5,7 @@ export const skills: SkillCategory[] = [
     category: "Languages",
     items: [
       { name: "JavaScript", icon: "JS" },
+      { name: "TypeScript", icon: "TS" },
       { name: "Python", icon: "PY" },
       { name: "Dart", icon: "DT" },
       { name: "HTML/CSS", icon: "HC" },
@@ -20,21 +21,23 @@ export const skills: SkillCategory[] = [
     ],
   },
   {
-    category: "Backend",
+    category: "Backend & Cloud",
     items: [
       { name: "Django", icon: "DJ" },
-      { name: "Django REST framework", icon: "DR" },
+      { name: "Django REST", icon: "DR" },
+      { name: "PostgreSQL", icon: "PG" },
       { name: "Supabase", icon: "SB" },
       { name: "Firebase", icon: "FB" },
     ],
   },
   {
-    category: "Tools & Others",
+    category: "Tools & Innovation",
     items: [
+      { name: "AI Integration", icon: "AI" },
+      { name: "REST APIs", icon: "API" },
       { name: "Docker", icon: "DO" },
       { name: "Git", icon: "GT" },
       { name: "Linux", icon: "LX" },
-      { name: "REST APIs", icon: "API" },
     ],
   },
 ];

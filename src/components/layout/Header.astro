@@ -1,0 +1,677 @@
+---
+import { SITE_TITLE } from '../../consts';
+import HeaderLink from '../HeaderLink.astro';
+import ThemeToggle from '../ThemeToggle.astro';
+---
+
+<header>
+  <nav>
+    <!-- Left: logo -->
+    <h2><a href="/">{SITE_TITLE}</a></h2>
+
+    <!-- Middle: desktop nav -->
+    <div id="nav-menu" class="internal-links">
+      <HeaderLink href="/">Home</HeaderLink>
+      <HeaderLink href="/#about">About</HeaderLink>
+      <HeaderLink href="/#exp">Experience</HeaderLink>
+      <HeaderLink href="/#skills">Skills</HeaderLink>
+      <HeaderLink href="/#projects">Projects</HeaderLink>
+      <HeaderLink href="/#contact">Contact</HeaderLink>
+      <HeaderLink href="/blog">Blog</HeaderLink>
+    </div>
+
+    <!-- Right: theme + hamburger -->
+    <div class="nav-actions">
+      <ThemeToggle />
+      <button id="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Drawer (#mobile-menu) -->
+  <div id="mobile-menu" class="mobile-nav-drawer" aria-hidden="true">
+    <div class="mobile-nav-links">
+      <HeaderLink href="/">Home</HeaderLink>
+      <HeaderLink href="/#about">About</HeaderLink>
+      <HeaderLink href="/#exp">Experience</HeaderLink>
+      <HeaderLink href="/#skills">Skills</HeaderLink>
+      <HeaderLink href="/#projects">Projects</HeaderLink>
+      <HeaderLink href="/#contact">Contact</HeaderLink>
+      <HeaderLink href="/blog">Blog</HeaderLink>
+    </div>
+  </div>
+</header>
+
+<!-- GLOBAL JOIN TEAM MODAL (Placed globally outside #mobile-menu) -->
+<div id="join-team-modal" class="modal-backdrop" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="join-modal-title">
+  <div class="modal-container">
+    <div class="modal-content" data-lenis-prevent="true">
+      <button type="button" class="modal-close" id="close-join-modal" aria-label="Close modal">&times;</button>
+      
+      <!-- Focused single-column form on desktop (no visual sidebar) -->
+      <div class="modal-header">
+        <div role="heading" aria-level="2" id="join-modal-title" class="modal-title">Join Our Team</div>
+        <p class="modal-subtitle">We are always looking for passionate builders, designers, and engineers. Send us your details below.</p>
+      </div>
+
+      <form id="join-team-form" class="join-form" action="https://formspree.io/f/xnnldoqp" method="POST">
+        <div class="form-group">
+          <label for="join-name">Full Name</label>
+          <input type="text" id="join-name" name="name" placeholder="Your full name" required minlength="2" />
+        </div>
+
+        <div class="form-group">
+          <label for="join-email">Email Address</label>
+          <input type="email" id="join-email" name="email" placeholder="you@example.com" required />
+        </div>
+
+        <div class="form-group">
+          <label for="join-role">Role of Interest</label>
+          <select id="join-role" name="role" required>
+            <option value="" disabled selected>Select a role...</option>
+            <option value="Frontend Developer">Frontend Developer (React / Astro)</option>
+            <option value="Full Stack Developer">Full Stack Developer</option>
+            <option value="Mobile Developer">Mobile Developer (Flutter / Dart)</option>
+            <option value="Backend Developer">Backend Developer (Python / Django)</option>
+            <option value="Product / Design">Product / UI/UX Design</option>
+            <option value="Other">Other Collaboration</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="join-portfolio">Portfolio / GitHub / LinkedIn URL</label>
+          <input type="url" id="join-portfolio" name="portfolio" placeholder="https://github.com/yourhandle" />
+        </div>
+
+        <div class="form-group">
+          <label for="join-message">Cover Note / Why Join Us?</label>
+          <textarea id="join-message" name="message" rows="3" placeholder="Tell us about yourself and what you'd like to build with us..." required minlength="10"></textarea>
+        </div>
+
+        <button type="submit" class="btn submit-btn" id="join-submit-btn">
+          <span class="btn-text">Submit Application</span>
+        </button>
+        <div id="join-form-status" class="form-status" style="display: none;"></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* ---------- outer box ---------- */
+  header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    box-sizing: border-box;
+    z-index: 50;
+    min-height: 60px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 1.5rem;
+    padding-top: env(safe-area-inset-top, 0px);
+    transition: background 0.3s;
+  }
+
+  @media (max-width: 600px) {
+    header {
+      padding: 0 1rem;
+      padding-top: env(safe-area-inset-top, 0px);
+    }
+  }
+
+  html.dark header {
+    background: rgba(15, 23, 42, 0.85);
+    border-bottom: 1px solid var(--border);
+  }
+
+  nav {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  h2 { 
+    margin: 0; 
+    font-size: 1.25em; 
+    font-weight: 700;
+  }
+  h2 a { 
+    text-decoration: none; 
+    color: var(--text); 
+    transition: color 0.2s;
+  }
+  h2 a:hover {
+    color: var(--accent);
+  }
+
+  /* ---------- desktop nav ---------- */
+  .internal-links {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  .internal-links a {
+    padding: 0.4rem 0.75rem;
+    color: var(--text);
+    text-decoration: none;
+    white-space: nowrap;
+    border-radius: 0.5rem;
+    transition: all 0.2s;
+    font-size: 0.95rem;
+  }
+  .internal-links a:hover {
+    background: var(--card);
+    color: var(--accent);
+  }
+  .internal-links a.active {
+    background: var(--accent) !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    text-decoration: none !important;
+    box-shadow: 0 2px 8px rgba(35, 55, 255, 0.25);
+  }
+  .internal-links a.active:hover {
+    background: var(--accent-dark) !important;
+  }
+
+  html.dark .internal-links a.active,
+  html.dark .mobile-nav-links a.active {
+    background: #3b82f6 !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+  }
+  html.dark .internal-links a.active:hover,
+  html.dark .mobile-nav-links a.active:hover {
+    background: #2563eb !important;
+  }
+
+  /* ---------- actions ---------- */
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  /* ---------- hamburger ---------- */
+  #menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 36px;
+    height: 36px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  #menu-toggle:hover {
+    background: var(--border);
+  }
+  #menu-toggle .bar {
+    width: 18px;
+    height: 2px;
+    background: var(--text);
+    margin: 2.5px 0;
+    transition: 0.3s;
+    border-radius: 1px;
+  }
+  #menu-toggle[aria-expanded="true"] .bar:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+  #menu-toggle[aria-expanded="true"] .bar:nth-child(2) {
+    opacity: 0;
+  }
+  #menu-toggle[aria-expanded="true"] .bar:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+  }
+
+  /* ---------- mobile ---------- */
+  .mobile-nav-drawer {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    #menu-toggle { display: flex; }
+    .internal-links { display: none; }
+
+    .mobile-nav-drawer {
+      display: block;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--bg);
+      flex-direction: column;
+      border-bottom: 1px solid var(--border);
+      transform: translateY(-10px);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      z-index: 40;
+    }
+    .mobile-nav-drawer.open {
+      transform: translateY(0);
+      opacity: 1;
+      visibility: visible;
+    }
+    .mobile-nav-links {
+      display: flex;
+      flex-direction: column;
+      padding: 1rem 1.5rem;
+      gap: 0.5rem;
+    }
+    .mobile-nav-links a {
+      padding: 0.75rem 1rem;
+      width: 100%;
+      border-radius: 0.5rem;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+    .mobile-nav-links a:hover {
+      background: var(--card);
+    }
+    .mobile-nav-links a.active {
+      background: var(--accent) !important;
+      color: #ffffff !important;
+      font-weight: 600;
+      text-decoration: none !important;
+      box-shadow: 0 2px 8px rgba(35, 55, 255, 0.2);
+    }
+  }
+
+  /* ---------- GLOBAL JOIN TEAM MODAL ---------- */
+  .modal-backdrop {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 99999;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+  .modal-backdrop.active {
+    display: flex;
+  }
+
+  .modal-container {
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    animation: modalPop 0.25s ease-out;
+  }
+
+  @keyframes modalPop {
+    from {
+      opacity: 0;
+      transform: scale(0.96) translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  .modal-content {
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    position: relative;
+    max-height: 85vh;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 32px;
+    height: 32px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    font-size: 1.4rem;
+    line-height: 1;
+    color: var(--text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .modal-close:hover {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+
+  .modal-header {
+    margin-bottom: 1.5rem;
+    padding-right: 2rem;
+  }
+  .modal-header .modal-title {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.6rem;
+    color: var(--text);
+    font-weight: 700;
+  }
+  .modal-subtitle {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text);
+    opacity: 0.8;
+    line-height: 1.5;
+  }
+
+  .join-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    text-align: left;
+  }
+  .form-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 0.65rem 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--card);
+    color: var(--text);
+    font-size: 0.95rem;
+    font-family: inherit;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(35, 55, 255, 0.15);
+  }
+
+  .submit-btn {
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 0.75rem;
+    font-size: 1rem;
+  }
+
+  .form-status {
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    text-align: center;
+    margin-top: 0.5rem;
+  }
+  .form-status.success {
+    background: rgba(34, 197, 94, 0.15);
+    border: 1px solid #22c55e;
+    color: #16a34a;
+    display: block !important;
+  }
+  .form-status.error {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid #ef4444;
+    color: #dc2626;
+    display: block !important;
+  }
+</style>
+
+<script>
+  // ---------- Mobile Navigation Controller ----------
+  const btn = document.getElementById('menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  if (btn && mobileMenu) {
+    btn.addEventListener('click', () => {
+      const open = mobileMenu.classList.toggle('open');
+      btn.setAttribute('aria-expanded', String(open));
+      mobileMenu.setAttribute('aria-hidden', String(!open));
+    });
+
+    mobileMenu.querySelectorAll('a').forEach((a) =>
+      a.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+        mobileMenu.setAttribute('aria-hidden', 'true');
+      })
+    );
+
+    document.addEventListener('click', (e) => {
+      const target = e.target as Node;
+      if (!mobileMenu.contains(target) && !btn.contains(target) && mobileMenu.classList.contains('open')) {
+        mobileMenu.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+        mobileMenu.setAttribute('aria-hidden', 'true');
+      }
+    });
+  }
+
+  // ---------- Active Link on Scroll ----------
+  const sectionIds = ['about', 'exp', 'skills', 'projects', 'contact'];
+  const allNavLinks = document.querySelectorAll('.internal-links a, .mobile-nav-links a');
+  const isHomePage = window.location.pathname === '/' || window.location.pathname === '';
+  const isBlog = window.location.pathname.startsWith('/blog');
+
+  function updateActiveNavLink() {
+    if (isBlog) {
+      allNavLinks.forEach((link) => {
+        const href = link.getAttribute('href') || '';
+        const isMatch = href === '/blog' || href.startsWith('/blog/');
+        link.classList.toggle('active', isMatch);
+      });
+      return;
+    }
+
+    if (!isHomePage) {
+      const currentPath = window.location.pathname;
+      allNavLinks.forEach((link) => {
+        const href = link.getAttribute('href') || '';
+        link.classList.toggle('active', href === currentPath);
+      });
+      return;
+    }
+
+    let activeId = '';
+    const scrollY = window.scrollY;
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+
+    // 1. Top of page -> Home
+    if (scrollY < 260) {
+      activeId = '';
+    } 
+    // 2. Reached bottom of page -> Contact
+    else if ((scrollY + windowHeight) >= (documentHeight - 60)) {
+      activeId = 'contact';
+    } 
+    // 3. Scan target sections from bottom to top
+    else {
+      const sections = sectionIds
+        .map((id) => document.getElementById(id))
+        .filter((el): el is HTMLElement => el !== null);
+
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const rect = sections[i].getBoundingClientRect();
+        if (rect.top <= 160) {
+          activeId = sections[i].id;
+          break;
+        }
+      }
+    }
+
+    // Apply active class to matching links
+    allNavLinks.forEach((link) => {
+      const href = link.getAttribute('href') || '';
+      let isMatch = false;
+      if (!activeId) {
+        isMatch = href === '/' || href === '';
+      } else {
+        isMatch = href === `/#${activeId}` || href === `#${activeId}`;
+      }
+      link.classList.toggle('active', isMatch);
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveNavLink, { passive: true });
+  window.addEventListener('resize', updateActiveNavLink, { passive: true });
+  window.addEventListener('hashchange', updateActiveNavLink, { passive: true });
+  updateActiveNavLink();
+
+  // ---------- Join Team Modal Controller & Scroll Lock Fix ----------
+  const modal = document.getElementById('join-team-modal');
+  const closeBtn = document.getElementById('close-join-modal');
+  const modalContent = modal?.querySelector('.modal-content') as HTMLElement | null;
+
+  function openJoinModal() {
+    if (!modal) return;
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+
+    // Strict Scroll Lock: Lock both html and body overflow
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+
+    // Close mobile menu if open
+    if (mobileMenu && mobileMenu.classList.contains('open')) {
+      mobileMenu.classList.remove('open');
+      btn?.setAttribute('aria-expanded', 'false');
+      mobileMenu.setAttribute('aria-hidden', 'true');
+    }
+
+    const firstInput = modal.querySelector('input') as HTMLInputElement | null;
+    firstInput?.focus();
+  }
+
+  function closeJoinModal() {
+    if (!modal) return;
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+
+    // Unlock html and body overflow
+    document.documentElement.style.overflow = '';
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement | null;
+    if (target?.closest('.open-join-modal')) {
+      e.preventDefault();
+      openJoinModal();
+    }
+  });
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', closeJoinModal);
+  }
+
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeJoinModal();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('active')) {
+        closeJoinModal();
+      }
+    });
+
+    // SCROLL HIJACK DEFENSE: Stop propagation of wheel and touchmove events
+    if (modalContent) {
+      modalContent.addEventListener('wheel', (e) => {
+        e.stopPropagation();
+      }, { passive: false });
+
+      modalContent.addEventListener('touchmove', (e) => {
+        e.stopPropagation();
+      }, { passive: false });
+    }
+  }
+
+  // Join Form Submission Handling
+  const joinForm = document.getElementById('join-team-form') as HTMLFormElement | null;
+  const joinStatus = document.getElementById('join-form-status');
+  const submitBtn = document.getElementById('join-submit-btn');
+
+  if (joinForm && joinStatus && submitBtn) {
+    joinForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      submitBtn.setAttribute('disabled', 'true');
+      submitBtn.textContent = 'Submitting...';
+
+      try {
+        const formData = new FormData(joinForm);
+        const res = await fetch(joinForm.action, {
+          method: 'POST',
+          body: formData,
+          headers: { Accept: 'application/json' },
+        });
+
+        if (res.ok) {
+          joinStatus.className = 'form-status success';
+          joinStatus.textContent = 'Thank you! Your application has been received.';
+          joinForm.reset();
+          setTimeout(() => {
+            closeJoinModal();
+            joinStatus.style.display = 'none';
+            joinStatus.className = 'form-status';
+          }, 2500);
+        } else {
+          throw new Error('Submission failed');
+        }
+      } catch (err) {
+        joinStatus.className = 'form-status error';
+        joinStatus.textContent = 'Oops! There was an issue submitting. Please try again.';
+      } finally {
+        submitBtn.removeAttribute('disabled');
+        submitBtn.textContent = 'Submit Application';
+      }
+    });
+  }
+</script>

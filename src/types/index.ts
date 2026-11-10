@@ -18,11 +18,16 @@ export interface Job {
   end: string;
   desc: string;
   logo: string;
+  duration?: string;
+  location?: string;
+  skills?: string[];
 }
 
 export interface Skill {
   name: string;
   icon: string;
+  level?: string;
+  category?: string;
 }
 
 export interface SkillCategory {

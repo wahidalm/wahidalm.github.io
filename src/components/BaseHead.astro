@@ -19,7 +19,16 @@ const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
   "name": "Wahiduz Zaman Alam",
-  "jobTitle": "Software Engineer",
+  "alternateName": "Wahid Alam",
+  "jobTitle": "Senior Full-Stack Software Engineer",
+  "worksFor": {
+    "@type": "Organization",
+    "name": "Boxin"
+  },
+  "alumniOf": {
+    "@type": "EducationalOrganization",
+    "name": "B.Tech in Computer Science"
+  },
   "url": "https://wahidalm.github.io",
   "email": "mailto:wahiduzalam@gmail.com",
   "address": {
@@ -33,15 +42,17 @@ const personSchema = {
     "https://x.com/MrNobodyPlays1"
   ],
   "knowsAbout": [
-    "Frontend Development",
-    "React",
-    "Next.js",
-    "Astro",
+    "Full-Stack Development",
+    "Software Engineering",
     "Flutter",
     "Django",
-    "JavaScript",
     "Python",
-    "Web Development"
+    "React.js",
+    "Next.js",
+    "Astro",
+    "PostgreSQL",
+    "Docker",
+    "Artificial Intelligence Integration"
   ]
 };
 ---
@@ -51,6 +62,21 @@ const personSchema = {
 <meta name="google-site-verification" content="XKOlQUS5r-WU90A62Fo4lIAJkn6wz0bXNwprmGmvjqY" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <meta name="generator" content={Astro.generator} />
+
+<!-- Blocking Theme Detector (Eliminates FOUC / Theme Flash on reload) -->
+<script is:inline>
+  (function () {
+    try {
+      const saved = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (saved === 'dark' || (!saved && prefersDark)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    } catch (_) {}
+  })();
+</script>
 
 <link rel="canonical" href={canonicalURL} />
 
@@ -81,7 +107,7 @@ const personSchema = {
 
 <!-- Additional Meta Tags -->
 <meta name="theme-color" content="#2337ff" />
-<meta name="keywords" content="Wahid Alam, Software Engineer, Frontend Developer, React, Next.js, Flutter, Django, Web Developer, Portfolio" />
+<meta name="keywords" content="Wahid Alam, Wahiduz Zaman Alam, Software Engineer, Full Stack Developer, Frontend Developer, Astro, Flutter, Django, AI integration, React, Next.js, Python, TypeScript, Web Developer, Portfolio" />
 
 <!-- JSON-LD Structured Data -->
 <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />

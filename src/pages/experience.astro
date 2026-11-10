@@ -1,121 +1,472 @@
 ---
 import { jobs } from '../data/experience';
+
+interface Props {
+  isSection?: boolean;
+}
+
+const { isSection = false } = Astro.props;
 ---
 
-<main id="exp" class="wrap">
-  <h1>Experience</h1>
+<div id={isSection ? undefined : "exp"} class="wrap">
+  {isSection ? <h2>Experience</h2> : <h1>Experience</h1>}
 
   <div class="timeline">
+    <!-- Base Timeline Track Line -->
+    <div id="base-line" class="base-line" aria-hidden="true"></div>
+
+    <!-- Scroll-Driven Fill Line & Dot Indicator -->
+    <div id="scroll-line" class="scroll-line" aria-hidden="true"></div>
+    <div id="scroll-dot" class="scroll-dot" aria-hidden="true"></div>
+
     {
       jobs.map((j, i) => (
-        <article class="card" data-delay={i}>
-          <div class="dot" />
-          <img src={j.logo} alt={j.company} class="logo" />
-          <div class="content">
-            <h2>{j.role}</h2>
-            <p class="company">
-              {j.company} · {j.team}
-            </p>
-            <p class="date">
-              {j.start} – {j.end}
-            </p>
-            <p class="desc">{j.desc}</p>
+        <div class="timeline-row" data-index={i}>
+          <div class="badge-col">
+            <div class="timeline-badge" aria-label="Work experience item">
+              <svg
+                class="work-icon"
+                viewBox="0 0 24 24"
+                width="19"
+                height="19"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+              </svg>
+            </div>
+            <div class="timeline-arrow" aria-hidden="true"></div>
           </div>
-        </article>
+
+          <article class="card">
+            <div class="card-header">
+              <img
+                src={j.logo}
+                alt={`${j.company} logo`}
+                class="logo"
+                width="34"
+                height="34"
+                loading="lazy"
+              />
+              <div class="header-main">
+                {isSection ? <h3>{j.role}</h3> : <h2>{j.role}</h2>}
+                <p class="company">
+                  <span class="company-name">{j.company}</span>
+                  <span class="company-sep">·</span>
+                  <span class="team-name">{j.team}</span>
+                  {j.location && <span class="location">({j.location})</span>}
+                </p>
+              </div>
+              <span class="date-chip">{j.start} – {j.end}</span>
+            </div>
+
+            <p class="desc">{j.desc}</p>
+
+            {j.skills && j.skills.length > 0 && (
+              <div class="job-skills">
+                {j.skills.map((skill) => (
+                  <span class="skill-tag">{skill}</span>
+                ))}
+              </div>
+            )}
+          </article>
+        </div>
       ))
     }
   </div>
-</main>
+</div>
 
 <style>
-  /* Experience page styles */
-.wrap{
-  scroll-margin-top:75px;
-}
+  .wrap {
+    scroll-margin-top: 80px;
+    padding: 1.5rem 0 0.5rem;
+  }
 
-h1{font-size:2rem;margin-bottom:2rem;text-align:center}
+  h1, h2 {
+    font-size: 2rem;
+    margin-bottom: 2.25rem;
+    text-align: center;
+  }
 
-/* ---------- timeline ---------- */
-.timeline{position:relative;padding:1rem 0}
-.timeline::before{        /* vertical line */
-  content:"";
-  position:absolute;
-  left:20px;               /* pull left on tiny screens */
-  top:0;bottom:0;
-  width:2px;
-  background:var(--border);
-}
+  /* ---------- Timeline Container ---------- */
+  .timeline {
+    position: relative;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
 
-/* ---------- card – fully responsive ---------- */
-.card{
-  display:flex;
-  align-items:flex-start;
-  gap:0.75rem;
-  margin:0 0 2rem 0;
-  opacity:0;
-  transform:translateY(30px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-.card.visible {
-  opacity:1;
-  transform:translateY(0);
-}
+  /* Base Grey Track Line */
+  .base-line {
+    position: absolute;
+    left: 24px;
+    width: 2px;
+    background: var(--border);
+    transform: translateX(-50%);
+    z-index: 1;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
 
-.dot{
-  width:14px;height:14px;
-  background:var(--accent,#6366f1);
-  border-radius:50%;
-  flex-shrink:0;
-  margin-top:6px;
-  box-shadow:0 0 0 3px var(--bg);
-}
+  /* Scroll Progress Line */
+  .scroll-line {
+    position: absolute;
+    left: 24px;
+    width: 2px;
+    background: var(--accent);
+    transform: translateX(-50%);
+    z-index: 2;
+    pointer-events: none;
+    box-shadow: 0 0 12px rgba(35, 55, 255, 0.45);
+    will-change: height, top;
+    transition: height 0.08s ease-out;
+  }
 
-.logo{
-  width:32px;
-  height:32px;
-  object-fit:contain;
-  background:#beb4b4;
-  border-radius:6px;
-  padding:3px;
-  flex-shrink:0;
-}
-@media (max-width: 400px) {
-  .timeline::before { display: none; }
-  .dot { display: none; }
-  .card { margin-left: 0; }
-  h2{ font-size:2rem; }
-}
-html.dark .logo{background:#222}
+  /* Scroll Progress Dot */
+  .scroll-dot {
+    position: absolute;
+    left: 24px;
+    width: 14px;
+    height: 14px;
+    border-radius: 4px;
+    background: var(--accent);
+    border: 2.5px solid var(--bg);
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    pointer-events: none;
+    box-shadow: 0 0 16px var(--accent), 0 0 28px rgba(35, 55, 255, 0.4);
+    will-change: top;
+    transition: top 0.08s ease-out;
+  }
 
-.content{
-  flex:1 1 0;
-  min-width:0;                 /* critical – lets text wrap */
-  background:rgba(127,127,127,.05);
-  border:1px solid var(--border);
-  border-radius:8px;
-  padding:0.75rem 1rem;
-}
-html.dark .content{background:rgba(255,255,255,.05)}
+  /* ---------- Timeline Row ---------- */
+  .timeline-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    position: relative;
+  }
 
-.company{font-weight:600;margin:.25rem 0;overflow-wrap:break-word;}
-.date{opacity:.75;font-size:.85rem;overflow-wrap:break-word;}
-.desc{margin:.5rem 0 0;overflow-wrap:break-word;} /* break long words */
+  /* Badge Column */
+  .badge-col {
+    position: relative;
+    width: 48px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 4px;
+    z-index: 4;
+  }
+
+  .timeline-badge {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background-color: var(--card);
+    border: 2px solid var(--border);
+    color: rgb(var(--gray));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.35s ease;
+    box-sizing: border-box;
+  }
+
+  .work-icon {
+    width: 19px;
+    height: 19px;
+    transition: transform 0.3s ease, stroke 0.3s ease;
+  }
+
+  .timeline-row.is-active .work-icon {
+    transform: scale(1.12);
+  }
+
+  /* Connector Arrow pointing towards the card */
+  .timeline-arrow {
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    width: 14px;
+    height: 0;
+    border-top: 2px dashed var(--border);
+    transform: translateY(-50%);
+    transition: border-color 0.35s ease;
+    pointer-events: none;
+  }
+
+  .timeline-arrow::after {
+    content: "";
+    position: absolute;
+    left: 8px;
+    top: -4px;
+    width: 6px;
+    height: 6px;
+    border-top: 2px solid var(--border);
+    border-right: 2px solid var(--border);
+    transform: rotate(45deg);
+    transition: border-color 0.35s ease;
+  }
+
+  /* Active Row States */
+  .timeline-row.is-active .timeline-badge {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--card);
+    box-shadow: 0 0 16px rgba(35, 55, 255, 0.3);
+    transform: scale(1.04);
+  }
+
+  .timeline-row.is-active .timeline-arrow {
+    border-top-color: var(--accent);
+  }
+
+  .timeline-row.is-active .timeline-arrow::after {
+    border-top-color: var(--accent);
+    border-right-color: var(--accent);
+  }
+
+  /* ---------- Content Card ---------- */
+  .card {
+    flex: 1 1 0;
+    min-width: 0;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.15rem 1.35rem;
+    opacity: 0.65;
+    transform: translateY(10px);
+    transition: opacity 0.45s ease, transform 0.45s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+  }
+
+  .timeline-row.is-active .card {
+    opacity: 1;
+    transform: translateY(0);
+    border-color: rgba(35, 55, 255, 0.32);
+    box-shadow: 0 6px 20px rgba(35, 55, 255, 0.07);
+  }
+
+  html.dark .timeline-row.is-active .card {
+    border-color: rgba(79, 107, 255, 0.42);
+    box-shadow: 0 6px 24px rgba(79, 107, 255, 0.12);
+  }
+
+  /* Card Header */
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.5rem;
+  }
+
+  .logo {
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
+    background: #e2e8f0;
+    border-radius: 8px;
+    padding: 4px;
+    flex-shrink: 0;
+  }
+  html.dark .logo {
+    background: #1e293b;
+    border: 1px solid var(--border);
+  }
+
+  .header-main {
+    flex: 1 1 auto;
+    min-width: 180px;
+  }
+
+  h3, h2.role-title {
+    font-size: 1.15rem;
+    margin: 0 0 0.2rem 0;
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  .company {
+    font-size: 0.88rem;
+    color: var(--text);
+    margin: 0;
+    opacity: 0.82;
+  }
+
+  .company-name {
+    font-weight: 600;
+  }
+
+  .company-sep {
+    margin: 0 0.25rem;
+    opacity: 0.5;
+  }
+
+  .location {
+    font-weight: 400;
+    opacity: 0.75;
+  }
+
+  .date-chip {
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 0.25rem 0.65rem;
+    border-radius: 9999px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    opacity: 0.85;
+    margin-left: auto;
+    white-space: nowrap;
+  }
+
+  .desc {
+    margin: 0.6rem 0 0;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--text);
+    opacity: 0.9;
+  }
+
+  .job-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.85rem;
+  }
+
+  .skill-tag {
+    font-size: 0.74rem;
+    font-weight: 500;
+    padding: 3px 9px;
+    border-radius: 9999px;
+    background: rgba(var(--gray), 0.12);
+    color: var(--text);
+    border: 1px solid transparent;
+    transition: border-color 0.2s ease;
+  }
+
+  .timeline-row.is-active .skill-tag {
+    border-color: rgba(35, 55, 255, 0.15);
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 540px) {
+    .timeline {
+      gap: 1.5rem;
+    }
+
+    .base-line,
+    .scroll-line,
+    .scroll-dot {
+      left: 19px;
+    }
+
+    .badge-col {
+      width: 38px;
+    }
+
+    .timeline-badge {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+    }
+
+    .work-icon {
+      width: 16px;
+      height: 16px;
+    }
+
+    .timeline-arrow {
+      width: 10px;
+    }
+    .timeline-arrow::after {
+      left: 5px;
+    }
+
+    .timeline-row {
+      gap: 0.85rem;
+    }
+
+    .card {
+      padding: 0.9rem 1rem;
+    }
+
+    .date-chip {
+      margin-left: 0;
+      width: fit-content;
+      margin-top: 0.25rem;
+    }
+  }
 </style>
 
 <script>
-  const obs = new IntersectionObserver(
-    (entries, observer) => {
-      entries.forEach((e) => {
-        if (e.isIntersecting) {
-          const el = e.target;
-          el.classList.add("visible");
-          observer.unobserve(el); // run once
-        }
+  (function () {
+    const timeline = document.querySelector(".timeline") as HTMLElement | null;
+    const baseLine = document.getElementById("base-line") as HTMLElement | null;
+    const scrollLine = document.getElementById("scroll-line") as HTMLElement | null;
+    const scrollDot = document.getElementById("scroll-dot") as HTMLElement | null;
+    const rows = document.querySelectorAll(".timeline-row") as NodeListOf<HTMLElement>;
+
+    function updateTimeline() {
+      if (!timeline || !baseLine || !scrollLine || !scrollDot || !rows.length) return;
+      if (timeline.offsetParent === null) return;
+
+      const tRect = timeline.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const firstBadge = rows[0].querySelector(".timeline-badge") as HTMLElement | null;
+      const lastBadge = rows[rows.length - 1].querySelector(".timeline-badge") as HTMLElement | null;
+      if (!firstBadge || !lastBadge) return;
+
+      const g = firstBadge.getBoundingClientRect();
+      const d = lastBadge.getBoundingClientRect();
+
+      // Centers of first and last badge relative to timeline container
+      const u = (g.top - tRect.top) + (g.height / 2);
+      const p = (d.top - tRect.top) + (d.height / 2);
+
+      // Base line aligns perfectly from center of first badge to center of last badge
+      baseLine.style.top = u + "px";
+      baseLine.style.height = (p - u) + "px";
+
+      // Viewport trigger line (midpoint 50% of viewport)
+      const a = (0.5 * vh) - tRect.top;
+      let h = Math.max(u, a);
+      h = Math.min(p, h);
+
+      // Dynamic scroll fill line & glowing tracking dot
+      scrollLine.style.top = u + "px";
+      scrollLine.style.height = (h - u) + "px";
+      scrollDot.style.top = h + "px";
+
+      // Toggle active states for each row as the progress dot reaches it
+      const m = tRect.top + h;
+      rows.forEach((row) => {
+        const badge = row.querySelector(".timeline-badge") as HTMLElement | null;
+        if (!badge) return;
+        const bRect = badge.getBoundingClientRect();
+        const badgeCenter = bRect.top + (bRect.height / 2);
+        row.classList.toggle("is-active", badgeCenter <= m + 10);
       });
-    },
-    { threshold: 0.25 }
-  );
-  document.querySelectorAll(".card").forEach((c) => {
-    obs.observe(c);
-  });
+    }
+
+    if (timeline && baseLine && scrollLine && scrollDot && rows.length) {
+      window.addEventListener("scroll", updateTimeline, { passive: true });
+      window.addEventListener("resize", updateTimeline);
+      // Run once immediately and after layout settles
+      requestAnimationFrame(() => {
+        updateTimeline();
+        setTimeout(updateTimeline, 60);
+      });
+    }
+  })();
 </script>

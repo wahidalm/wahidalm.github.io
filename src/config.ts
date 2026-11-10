@@ -1,15 +1,12 @@
 import type { SiteConfig, PersonSchema } from '../types';
 
-// Main site configuration
-export const siteConfig: SiteConfig = {
-  title: 'Wahid Alam',
-  description: 'Portfolio of Wahid Alam. A passionate web developer and open-source enthusiast.',
-  author: 'Wahiduz Zaman Alam',
-  email: 'wahiduzalam@gmail.com',
-  location: 'Assam, India',
-  siteUrl: 'https://wahidalm.github.io',
-  twitterHandle: '@MrNobodyPlays1',
-};
+// Import configuration from site.config.ts for backwards compatibility
+import { siteConfig as siteConfigFromFile, personalInfo, formConfig, personSchema, seoKeywords, socialLinks, externalEndpoints } from '../site.config';
+
+export { personalInfo, formConfig, personSchema, seoKeywords, socialLinks, externalEndpoints } from '../site.config';
+
+// Re-export siteConfig from the new centralized file
+export const siteConfig: SiteConfig = siteConfigFromFile;
 
 // Personal information
 export const personalInfo = {

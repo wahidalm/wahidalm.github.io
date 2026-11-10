@@ -1,15 +1,21 @@
 ---
 import { projects } from '../data/projects';
+
+interface Props {
+  isSection?: boolean;
+}
+
+const { isSection = false } = Astro.props;
 ---
 
-<section id="projects" class="projects-wrap">
+<div id={isSection ? undefined : "projects"} class="projects-wrap">
   <h2>Projects</h2>
   <div class="grid">
     {projects.map((p) => (
       <article class="card">
         {p.img ? (
-          <a href={p.live || p.code} target="_blank" rel="noopener noreferrer" class="img-link">
-            <img src={p.img} alt={p.alt} loading="lazy" />
+          <a href={p.live || p.code} target="_blank" rel="noopener noreferrer" class="img-link" aria-label={`View ${p.title} project`}>
+            <img src={p.img} alt={p.alt} loading="lazy" width="400" height="180" />
           </a>
         ) : (
           <div class="img-placeholder">
@@ -25,27 +31,27 @@ import { projects } from '../data/projects';
           </div>
           <div class="links">
             {p.live && (
-              <a href={p.live} target="_blank" rel="noopener noreferrer">
+              <a href={p.live} target="_blank" rel="noopener noreferrer" aria-label={`Live demo of ${p.title}`}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                Live
+                Live Demo
               </a>
             )}
-            <a href={p.code} target="_blank" rel="noopener noreferrer">
+            <a href={p.code} target="_blank" rel="noopener noreferrer" aria-label={`Source code for ${p.title}`}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-              Code
+              Source
             </a>
           </div>
         </div>
       </article>
     ))}
   </div>
-</section>
+</div>
 
 <style>
   .projects-wrap {
-    padding: 4rem 1rem;
+    padding: 1.5rem 0 0.5rem;
     max-width: 900px;
-    margin: 0 auto 4rem;
+    margin: 0 auto;
     scroll-margin-top: 80px;
   }
 
@@ -60,6 +66,13 @@ import { projects } from '../data/projects';
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 2rem;
+  }
+
+  @media (max-width: 480px) {
+    .grid {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
   }
 
   .card {
@@ -91,6 +104,7 @@ import { projects } from '../data/projects';
     height: 180px;
     object-fit: cover;
     transition: transform 0.3s;
+    display: block;
   }
 
   .card:hover img {
@@ -100,67 +114,58 @@ import { projects } from '../data/projects';
   .img-placeholder {
     width: 100%;
     height: 180px;
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+    background: linear-gradient(135deg, rgba(var(--gray), 0.1), rgba(var(--gray), 0.2));
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
   }
-
   .placeholder-text {
-    font-size: 1.5rem;
     font-weight: 700;
-    color: #fff;
+    font-size: 1.25rem;
+    color: var(--text);
   }
-
   .placeholder-sub {
     font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.8);
-    background: rgba(0, 0, 0, 0.2);
-    padding: 0.25rem 0.75rem;
-    border-radius: 999px;
+    color: var(--accent);
   }
 
   .content {
-    padding: 1.25rem 1.5rem 1.5rem;
-    flex: 1;
+    padding: 1.5rem;
     display: flex;
     flex-direction: column;
+    flex: 1;
   }
 
   h3 {
-    margin: 0 0 0.5rem;
-    font-size: 1.15rem;
+    margin: 0 0 0.5rem 0;
+    font-size: 1.25rem;
     color: var(--text);
   }
 
   p {
-    margin: 0 0 1rem;
-    font-size: 0.9rem;
-    color: rgb(var(--gray));
-    flex: 1;
+    font-size: 0.95rem;
     line-height: 1.6;
+    color: var(--text);
+    opacity: 0.9;
+    flex: 1;
+    margin-bottom: 1rem;
   }
 
   .tech {
     display: flex;
     flex-wrap: wrap;
     gap: 0.4rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
   }
 
   .tech span {
-    background: rgba(var(--gray-light), 0.6);
-    color: var(--text);
     font-size: 0.75rem;
-    padding: 0.3rem 0.6rem;
+    padding: 2px 8px;
     border-radius: 999px;
-    border: 1px solid var(--border);
-  }
-
-  html.dark .tech span {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(var(--gray), 0.1);
+    color: var(--text);
+    font-weight: 500;
   }
 
   .links {
@@ -173,50 +178,19 @@ import { projects } from '../data/projects';
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
+    font-size: 0.85rem;
+    font-weight: 600;
     text-decoration: none;
-    font-weight: 500;
-    font-size: 0.9rem;
     color: var(--accent);
-    transition: color 0.2s;
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
+    border: 1px solid rgba(var(--gray), 0.2);
+    transition: all 0.2s;
   }
 
   .links a:hover {
-    color: var(--accent-dark);
-    text-decoration: underline;
-  }
-
-  .links a svg {
-    flex-shrink: 0;
-  }
-
-  @media (max-width: 480px) {
-    .grid {
-      grid-template-columns: 1fr;
-    }
-    .projects-wrap {
-      padding: 2rem 1rem;
-    }
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
   }
 </style>
-
-<script>
-  const cards = document.querySelectorAll<HTMLElement>(".card");
-  cards.forEach((card) => {
-    card.style.opacity = "0";
-    card.style.transform = "translateY(30px)";
-    card.style.transition = "opacity 0.6s ease, transform 0.6s ease";
-  });
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        const el = entry.target as HTMLElement;
-        el.style.opacity = "1";
-        el.style.transform = "translateY(0)";
-        observer.unobserve(el);
-      }
-    });
-  }, { threshold: 0.1 });
-
-  cards.forEach((card) => observer.observe(card));
-</script>

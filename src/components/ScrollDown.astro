@@ -46,36 +46,45 @@
 </style>
 
 <script>
-  // scroll down
+  // scroll down cleanly section by section on a single click
   function scrollDown() {
-  const sections = document.querySelectorAll('section, #about, #exp, #projects, #contact');
-  let next = null;
-  for (const s of sections) {
-    if (s.getBoundingClientRect().top > window.innerHeight * 0.5) {
-      next = s;
-      break;
+    const targets = Array.from(document.querySelectorAll('#about, #exp, #skills, #projects, #contact')) as HTMLElement[];
+    const headerOffset = 80;
+
+    // Find the first section that is visually below the current view (top > 120px)
+    const next = targets.find((s) => s.getBoundingClientRect().top > 120);
+
+    if (next) {
+      const top = next.getBoundingClientRect().top + window.scrollY - headerOffset;
+      window.scrollTo({ top, behavior: 'smooth' });
+    } else {
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     }
   }
-  (next || document.body).scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
 
-document.querySelector('.scroll-glass.down')?.addEventListener('click', e => {
-  e.preventDefault();
-  scrollDown();
-});
+  document.querySelector('.scroll-glass.down')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    scrollDown();
+  });
 
   // scroll up + show/hide
-  const upBtn = document.querySelector('.scroll-glass.up');
+  const upBtn = document.querySelector('.scroll-glass.up') as HTMLElement | null;
   const showAt = 300; // px
 
-  const toggle = () => {
-    if (window.scrollY > showAt) upBtn.classList.add('show');
-    else upBtn.classList.remove('show');
-  };
-  window.addEventListener('scroll', toggle, { passive: true });
-  toggle(); // initial check
+  if (upBtn) {
+    const toggle = () => {
+      if (window.scrollY > showAt) {
+        upBtn.classList.add('show');
+        upBtn.removeAttribute('hidden');
+      } else {
+        upBtn.classList.remove('show');
+      }
+    };
+    window.addEventListener('scroll', toggle, { passive: true });
+    toggle(); // initial check
 
-  upBtn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
+    upBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
 </script>
